@@ -139,8 +139,6 @@ async function ejecutarAccion(id, estado) {
 }
 
 // ── Calendario general ─────────────────────────────────────
-let calendarioFiltro = 'aprobada';
-
 function renderCalendarioLoading() {
   document.getElementById('panelCalendario').innerHTML =
     `<div class="loading-state"><div class="spinner"></div><div>Cargando calendario…</div></div>`;
@@ -149,19 +147,7 @@ function renderCalendarioLoading() {
 function renderCalendario() {
   const p = document.getElementById('panelCalendario');
 
-  const filterHtml = `
-    <div class="calendar-filter">
-      <label>Mostrar:</label>
-      <select id="filtroCalendario" onchange="cambiarFiltroCalendario(this.value)">
-        <option value="aprobada"${calendarioFiltro === 'aprobada' ? ' selected' : ''}>Solo aprobadas</option>
-        <option value="pendiente"${calendarioFiltro === 'pendiente' ? ' selected' : ''}>Solo pendientes</option>
-        <option value="todas"${calendarioFiltro === 'todas' ? ' selected' : ''}>Todas</option>
-      </select>
-    </div>`;
-
-  const vacFiltradas = calendarioFiltro === 'todas'
-    ? allVacaciones
-    : allVacaciones.filter(v => v.estado === calendarioFiltro);
+  const vacFiltradas = allVacaciones;
 
   // Agrupar semanas por mes
   const meses = [];
@@ -197,12 +183,7 @@ function renderCalendario() {
 
   const legend = `<p class="hint-text" style="margin-top:12px;">Verde = aprobadas · Naranja = pendientes.</p>`;
 
-  p.innerHTML = filterHtml + listHtml + legend;
-}
-
-function cambiarFiltroCalendario(valor) {
-  calendarioFiltro = valor;
-  renderCalendario();
+  p.innerHTML = listHtml + legend;
 }
 
 // ── Lista de empleados ─────────────────────────────────────

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de Vacaciones — SEAC</title>
+
+  <!-- Dark mode: aplicar ANTES de renderizar para evitar flash -->
+  <script>
+    if (localStorage.getItem('seac-theme') === 'dark') {
+      document.documentElement.classList.add('dark');
+    }
+  </script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Blobs de fondo -->
+  <div class="bg-blobs">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <!-- Toast container -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- ═══════════════════════════════════════
+       SCREEN 1: Login empleado
+  ════════════════════════════════════════ -->
+  <div id="screen-login" class="screen">
+    <div class="login-card" style="margin: auto; position: relative; top: 50%; transform: translateY(-50%); max-width: 400px; left: 0; right: 0;">
+      <div class="login-eyebrow">SEAC S.A.</div>
+      <h1>Gestión de <em>Vacaciones</em></h1>
+
+      <div class="login-field">
+        <label for="selectEmpleado">Tu nombre</label>
+        <select id="selectEmpleado">
+          <option value="">— Seleccioná tu nombre —</option>
+        </select>
+      </div>
+
+      <button class="btn-prime" id="btnEntrar" style="margin-top:8px;">Entrar</button>
+
+      <a href="#" class="login-admin-link" id="linkAdmin">Acceso Admin</a>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       SCREEN 2: Login admin
+  ════════════════════════════════════════ -->
+  <div id="screen-admin-login" class="screen">
+    <div class="login-card" style="margin: auto; position: relative; top: 50%; transform: translateY(-50%); max-width: 380px; left: 0; right: 0;">
+      <div class="login-eyebrow">SEAC S.A.</div>
+      <h1>Panel <em>Admin</em></h1>
+
+      <div class="login-field">
+        <label for="inputAdminPass">Contraseña</label>
+        <input type="password" id="inputAdminPass" placeholder="••••••••" autocomplete="current-password">
+      </div>
+
+      <div class="login-error" id="loginAdminError"></div>
+
+      <button class="btn-prime" id="btnAdminEntrar" style="margin-top:8px;">Ingresar</button>
+
+      <a href="#" class="login-admin-link" id="linkVolverLogin">← Volver al inicio</a>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       SCREEN 3: Vista empleado
+  ════════════════════════════════════════ -->
+  <div id="screen-empleado" class="screen">
+
+    <header class="app-header">
+      <div class="app-header-brand">
+        <span class="app-header-logo">SEAC Vacaciones</span>
+        <span class="app-header-sep"></span>
+        <span class="app-header-user" id="headerNombreEmpleado"></span>
+      </div>
+      <div class="app-header-actions">
+        <button class="btn-theme" title="Cambiar tema">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"/>
+            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+          </svg>
+        </button>
+        <button class="btn-salir" id="btnSalirEmpleado">Salir</button>
+      </div>
+    </header>
+
+    <div class="app-content">
+      <div class="page-title">Mis <em>vacaciones</em></div>
+      <div class="page-subtitle">Solicitá tus días y revisá el estado de tus pedidos.</div>
+
+      <!-- Tabs empleado -->
+      <div id="tabsEmpleado" class="seac-nav-tabs">
+
+        <button class="seac-tab active" data-tab="panelSolicitar">
+          <span class="pos-name"></span>
+          <span class="tab-label">
+            <svg class="tab-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true">
+              <line x1="10" y1="3" x2="10" y2="13"/>
+              <polyline points="6,9 10,13 14,9"/>
+              <line x1="4" y1="17" x2="16" y2="17"/>
+            </svg>
+            <span class="tab-text">Solicitar</span>
+          </span>
+          <span class="pre-name"></span>
+        </button>
+
+        <button class="seac-tab" data-tab="panelMisSolicitudes">
+          <span class="pos-name"></span>
+          <span class="tab-label">
+            <svg class="tab-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true">
+              <circle cx="10" cy="10" r="7"/>
+              <polyline points="10,6 10,10 13,12"/>
+            </svg>
+            <span class="tab-text">Mis solicitudes</span>
+          </span>
+          <span class="pre-name"></span>
+        </button>
+
+      </div>
+
+      <div class="seac-tabs-content-module">
+        <div id="panelSolicitar" class="seac-tab-panel active">
+          <div class="loading-state"><div class="spinner"></div><div>Cargando…</div></div>
+        </div>
+        <div id="panelMisSolicitudes" class="seac-tab-panel">
+          <div class="loading-state"><div class="spinner"></div><div>Cargando…</div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       SCREEN 4: Panel admin
+  ════════════════════════════════════════ -->
+  <div id="screen-admin" class="screen">
+
+    <header class="app-header">
+      <div class="app-header-brand">
+        <span class="app-header-logo">SEAC Vacaciones</span>
+        <span class="app-header-sep"></span>
+        <span class="app-header-user">Panel Admin</span>
+      </div>
+      <div class="app-header-actions">
+        <button class="btn-theme" title="Cambiar tema">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"/>
+            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+          </svg>
+        </button>
+        <button class="btn-salir" id="btnSalirAdmin">Salir</button>
+      </div>
+    </header>
+
+    <div class="app-content">
+      <div class="page-title">Panel de <em>administración</em></div>
+      <div class="page-subtitle">Aprobá solicitudes, revisá el calendario y gestioná el equipo.</div>
+
+      <!-- Tabs admin -->
+      <div id="tabsAdmin" class="seac-nav-tabs">
+
+        <button class="seac-tab active" data-tab="panelPendientes">
+          <span class="pos-name"></span>
+          <span class="tab-label">
+            <svg class="tab-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true">
+              <circle cx="10" cy="10" r="7"/>
+              <polyline points="10,6 10,10 13,12"/>
+            </svg>
+            <span class="tab-text">Pendientes</span>
+          </span>
+          <span class="pre-name"></span>
+        </button>
+
+        <button class="seac-tab" data-tab="panelCalendario">
+          <span class="pos-name"></span>
+          <span class="tab-label">
+            <svg class="tab-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true">
+              <rect x="3" y="4" width="14" height="13" rx="2"/>
+              <line x1="3" y1="8" x2="17" y2="8"/>
+              <line x1="7" y1="2" x2="7" y2="6"/>
+              <line x1="13" y1="2" x2="13" y2="6"/>
+            </svg>
+            <span class="tab-text">Calendario</span>
+          </span>
+          <span class="pre-name"></span>
+        </button>
+
+        <button class="seac-tab" data-tab="panelEmpleados">
+          <span class="pos-name"></span>
+          <span class="tab-label">
+            <svg class="tab-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true">
+              <circle cx="9" cy="7" r="3"/>
+              <path d="M3 17c0-3.314 2.686-6 6-6"/>
+              <circle cx="15" cy="9" r="2"/>
+              <path d="M13 17c0-2.21 1.343-4 3-4"/>
+            </svg>
+            <span class="tab-text">Empleados</span>
+          </span>
+          <span class="pre-name"></span>
+        </button>
+
+      </div>
+
+      <div class="seac-tabs-content-module">
+        <div id="panelPendientes" class="seac-tab-panel active">
+          <div class="loading-state"><div class="spinner"></div><div>Cargando…</div></div>
+        </div>
+        <div id="panelCalendario" class="seac-tab-panel">
+          <div class="loading-state"><div class="spinner"></div><div>Cargando…</div></div>
+        </div>
+        <div id="panelEmpleados" class="seac-tab-panel">
+          <div class="loading-state"><div class="spinner"></div><div>Cargando…</div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/empleados.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/admin.js"></script>
+
+  <!-- Centrar screens de login verticalmente -->
+  <style>
+    #screen-login,
+    #screen-admin-login {
+      display: none;
+      min-height: 100vh;
+      padding: 32px 16px;
+      align-items: center;
+      justify-content: center;
+    }
+    #screen-login.active,
+    #screen-admin-login.active {
+      display: flex;
+      flex-direction: column;
+    }
+    #screen-login .login-card,
+    #screen-admin-login .login-card {
+      position: static;
+      transform: none;
+      top: auto;
+    }
+  </style>
+
+</body>
+</html>

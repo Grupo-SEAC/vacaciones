@@ -31,7 +31,7 @@
        SCREEN 1: Login empleado
   ════════════════════════════════════════ -->
   <div id="screen-login" class="screen">
-    <div class="login-card" style="margin: auto; position: relative; top: 50%; transform: translateY(-50%); max-width: 400px; left: 0; right: 0;">
+    <div class="login-card">
       <div class="login-eyebrow">SEAC S.A.</div>
       <h1>Gestión de <em>Vacaciones</em></h1>
 
@@ -229,28 +229,6 @@
   <script src="js/app.js"></script>
   <script src="js/admin.js"></script>
 
-  <!-- Centrar screens de login verticalmente -->
-  <style>
-    #screen-login,
-    #screen-admin-login {
-      display: none;
-      min-height: 100vh;
-      padding: 32px 16px;
-      align-items: center;
-      justify-content: center;
-    }
-    #screen-login.active,
-    #screen-admin-login.active {
-      display: flex;
-      flex-direction: column;
-    }
-    #screen-login .login-card,
-    #screen-admin-login .login-card {
-      position: static;
-      transform: none;
-      top: auto;
-    }
-  </style>
 
 </body>
 </html>

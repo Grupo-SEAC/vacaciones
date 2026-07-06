@@ -96,17 +96,18 @@ html.dark .blob-3 { background: radial-gradient(circle, rgba(96,165,250,0.08) 0%
 .screen.active { display: block; }
 
 /* === LOGIN SCREEN === */
-#screen-login {
+#screen-login,
+#screen-admin-login {
   display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 32px 16px;
 }
-#screen-login.active {
+#screen-login.active,
+#screen-admin-login.active {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  align-items: center;
   justify-content: center;
+  height: 100vh;
+  padding: 32px 16px;
 }
 
 .login-card {

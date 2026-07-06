@@ -105,6 +105,8 @@ html.dark .blob-3 { background: radial-gradient(circle, rgba(96,165,250,0.08) 0%
 #screen-login.active {
   display: flex;
   flex-direction: column;
+  height: 100vh;
+  justify-content: center;
 }
 
 .login-card {

@@ -3,6 +3,6 @@ const CONFIG = {
   webhookListar: "/vacaciones/listar",
   webhookSolicitar: "/vacaciones/solicitar",
   webhookActualizar: "/vacaciones/actualizar",
-  adminPassword: "seac2024",
+  adminPassword: "seac1234",
   semanasAdelante: 26
 };

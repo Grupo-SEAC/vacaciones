@@ -5,7 +5,7 @@ let currentEmployee = null;
 let allVacaciones   = [];
 let selectedWeeks   = [];   // índices de semanas seleccionadas (0..N)
 let semanas         = [];   // array de {inicio: Date, fin: Date}
-let confirmando     = false;
+let confirmando     = false; // true solo mientras se está enviando la solicitud
 
 // ── Inicialización ─────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
@@ -303,11 +303,11 @@ function handleWeekClick(weekIndex) {
 }
 
 function updateWeekGrid() {
-  document.querySelectorAll('.week-card').forEach((card, i) => {
+  document.querySelectorAll('.week-row[data-week]').forEach(card => {
     if (selectedWeeks.includes(parseInt(card.dataset.week))) {
-      card.classList.add('week-card-selected');
+      card.classList.add('week-row-selected');
     } else {
-      card.classList.remove('week-card-selected');
+      card.classList.remove('week-row-selected');
     }
   });
 
@@ -319,7 +319,6 @@ function updateWeekGrid() {
 }
 
 function showConfirmPanel() {
-  confirmando = true;
   const panel = document.getElementById('confirmPanel');
   if (panel) {
     panel.classList.add('visible');
@@ -351,6 +350,7 @@ function cancelarSeleccion() {
 
 async function confirmarSolicitud() {
   if (selectedWeeks.length === 0) return;
+  confirmando = true;
 
   const btn = document.getElementById('btnConfirmarSolicitud');
   btn.disabled = true;
